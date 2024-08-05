@@ -24,7 +24,7 @@ const bearSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'pending',
+      default: 'on-holding',
     },
     payment_status: {
       type: String,

@@ -33,7 +33,7 @@ const checkoutSession = catchAsync(async (req, res) => {
 });
 
 const createCheckoutSession = catchAsync(async (req, res) => {
-  const domainURL = 'http://localhost:3030';
+  const domainURL = config.client.url;
   const { email, _id } = req.user;
   // eslint-disable-next-line camelcase
   const { unit_amount, product_data, clipIds, bearId } = req.body;
