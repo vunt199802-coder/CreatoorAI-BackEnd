@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { bearService, musicService, emailService } = require('../services');
+const { bearService, emailService } = require('../services');
 
 const createBear = catchAsync(async (req, res) => {
   const bear = await bearService.createBear(req.body);
@@ -13,20 +13,6 @@ const getBears = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'email', 'payment_status']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await bearService.queryBears(filter, options).then((resp) => resp.results);
-  // let i = 0;
-  // let data = [];
-  // while (result.results.length > i) {
-  //   let j = 0;
-  //   let clips = [];
-  //   while (result.results[i].clipIds.length > j) {
-  //     // eslint-disable-next-line no-await-in-loop
-  //     const clip = await musicService.getMusicByClipId(result.results[i].clipIds[j]);
-  //     clips = [...clips, clip];
-  //     j += 1;
-  //   }
-  //   data = [...data, { ...result.results[i]._doc, clips }];
-  //   i += 1;
-  // }
   res.send(result);
 });
 
@@ -38,13 +24,14 @@ const getBear = catchAsync(async (req, res) => {
   res.send(bear);
 });
 
-const getMyBear = catchAsync(async (req, res) => {
+const getMyBears = catchAsync(async (req, res) => {
   const { _id } = req.user;
-  const bear = await bearService.getBearByUserId(_id);
+  const bear = await bearService.getBearsByUserId(_id);
   if (!bear) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Bear not found');
   }
-  res.send(bear);
+  const data = [...bear];
+  res.send(data);
 });
 
 const updateBear = catchAsync(async (req, res) => {
@@ -53,10 +40,10 @@ const updateBear = catchAsync(async (req, res) => {
 });
 
 const manageBear = catchAsync(async (req, res) => {
-  // const { email } = req.body;
+  const { email } = req.body;
   const { bearId } = req.params;
   const bear = await bearService.updateBearByBearId(bearId, req.body);
-  // await emailService.sendBearApproveEmail(email);
+  await emailService.sendBearApproveEmail(email);
   res.send(bear);
 });
 
@@ -69,7 +56,7 @@ module.exports = {
   createBear,
   getBears,
   getBear,
-  getMyBear,
+  getMyBears,
   updateBear,
   manageBear,
   deleteBear,

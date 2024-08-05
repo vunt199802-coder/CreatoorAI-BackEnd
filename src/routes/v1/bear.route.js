@@ -7,11 +7,11 @@ const { bearController } = require('../../controllers');
 const router = express.Router();
 
 router.route('/').get(bearController.getBears);
-router.route('/myBear').get(auth(), bearController.getMyBear);
+router.route('/myBear').get(auth(), bearController.getMyBears);
 
 router
   .route('/:bearId')
-  .get(auth(), bearController.getBear)
+  .get(bearController.getBear)
   .patch(auth(), bearController.updateBear)
   .delete(auth(), bearController.deleteBear);
 

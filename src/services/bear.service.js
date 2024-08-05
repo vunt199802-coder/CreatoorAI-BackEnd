@@ -55,6 +55,10 @@ const getBearByUserId = async (userId) => {
   return Bear.findOne({ userId });
 };
 
+const getBearsByUserId = async (userId) => {
+  return Bear.find({ userId });
+};
+
 /**
  * Update bear by id
  * @param {ObjectId} bearId
@@ -119,6 +123,7 @@ module.exports = {
   queryBears,
   getBearById,
   getBearByUserId,
+  getBearsByUserId,
   getBearByEmail,
   updateBearBySessionId,
   updateBearByUserId,
