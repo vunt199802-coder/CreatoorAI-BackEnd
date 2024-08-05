@@ -40,10 +40,10 @@ const updateBear = catchAsync(async (req, res) => {
 });
 
 const manageBear = catchAsync(async (req, res) => {
-  const { email } = req.body;
+  // const { email } = req.body;
   const { bearId } = req.params;
   const bear = await bearService.updateBearByBearId(bearId, req.body);
-  await emailService.sendBearApproveEmail(email);
+  // await emailService.sendBearApproveEmail(email);
   res.send(bear);
 });
 
