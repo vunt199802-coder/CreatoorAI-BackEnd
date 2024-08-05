@@ -16,7 +16,7 @@ const getMusic = catchAsync(async (req, res) => {
 
 const generateMusic = catchAsync(async (req, res) => {
   const { prompt } = req.body;
-  const { _id, email } = req.user;
+  const { _id } = req.user;
 
   let index = 0;
   let taskIds = [];
@@ -54,7 +54,7 @@ const generateMusic = catchAsync(async (req, res) => {
 
   const result = await bearService.createBear({ userId: _id, taskIds, prompt });
 
-  await emailService.sendOrderPaidEmail(email);
+  await emailService.sendOrderPaidEmail(config.email.admin, result._id);
 
   // const result = {
   //   code: 200,

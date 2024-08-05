@@ -60,12 +60,13 @@ If you did not create an account, then ignore this email.`;
  * @param {string} to
  * @returns {Promise}
  */
-const sendOrderPaidEmail = async (to) => {
+const sendOrderPaidEmail = async (to, bearId) => {
   const subject = '💲 User ordered to generated a song';
   // replace this url with the link to the email verification page of your front-end app
-  const text = `Dear admin of CreatoorAI,
-He ordered to generated a song with his child information. \n
-Your should review this bear soon`;
+  const text = `Dear admin of CreatoorAI,\n\n\n
+One order is arrived to generated a song with his child information. \n\n
+Your should review this bear soon.\n\n
+http://creatoor-ai-back-end.vercel.app/dashboard/admin/detail?bearId=${bearId}`;
   await sendEmail(to, subject, text);
 };
 
