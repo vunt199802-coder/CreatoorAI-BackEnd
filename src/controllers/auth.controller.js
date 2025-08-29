@@ -2,6 +2,15 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
+const webhook = catchAsync(async (req, res) => {
+  // Handle the webhook event here
+  console.log('Received webhook event:', req.body);
+  const user = await userService.createUser({email: 'req.body.email', name: 'req.body.name', password: 'defaultPassword1'});
+
+  // Respond to acknowledge receipt of the event
+  res.status(200).send({ received: true });
+});
+
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
@@ -53,6 +62,7 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  webhook,
   register,
   login,
   logout,
